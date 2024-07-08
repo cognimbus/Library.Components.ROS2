@@ -30,8 +30,7 @@
         "launch",
         "rtsp",
         "rtsp.launch.py",
-        "url:=${url}",
-        "image_topic_name:=${image_topic_name}"
+        "url:=${url}"
       ],
       "privileged": false,
       "gpu": false,
@@ -54,11 +53,18 @@
         "stringValue": "rtsp://127.0.0.1:8554/video"
       },
       {
-        "name": "image_topic_name",
-        "description": "image_topic_name",
+        "name": "width",
+        "description": "Image width.",
         "Category": "Static",
         "node": "",
-        "stringValue": "rtsp_stream_image"
+        "integerValue": "640"
+      },
+      {
+        "name": "height",
+        "description": "Image height.",
+        "Category": "Static",
+        "node": "",
+        "integerValue": "480"
       }
     ]
   },
@@ -73,7 +79,7 @@
         "description": "Color rectified image. RGB format.",
         "streamMode": "STREAM_MODE_TOPIC",
         "rosTopic": {
-          "topic": "/${image_topic_name}",
+          "topic": "/rtsp_stream_image",
           "type": "Messages.sensor_msgs.Image",
           "qosProfile": ""
         },
@@ -87,7 +93,7 @@
         "description": "Color rectified CompressedImage. jpeg format.",
         "streamMode": "STREAM_MODE_TOPIC",
         "rosTopic": {
-          "topic": "/${image_topic_name}/compressed",
+          "topic": "/rtsp_stream_image/compressed",
           "type": "Messages.sensor_msgs.CompressedImage",
           "qosProfile": ""
         },
