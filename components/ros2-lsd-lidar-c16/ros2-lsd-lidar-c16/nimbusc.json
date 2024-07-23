@@ -1,0 +1,310 @@
+{
+  "name": "ALGO/ros2-lsd-lidar-c16",
+  "type": "COMPONENT_TYPE_COMPONENT",
+  "className": "Ros2Component",
+  "instanceName": "",
+  "description": "lsd-lidar-c16 driver\nLicense: BSD",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 11,
+    "build": ""
+  },
+  "start": "START_MODE_AUTO",
+  "environment": {
+    "name": "",
+    "ipAddress": "",
+    "state": "ENVIRONMENT_STATE_UNLOADED",
+    "message": "",
+    "progress": 0,
+    "requiredDevices": [],
+    "ports": [],
+    "hostIpAddress": "",
+    "variables": [],
+    "dockerInfo": {
+      "image": "cognimbus/lsd-lidar-c16:humble",
+      "containerId": "",
+      "imageSize": 0,
+      "commands": [
+        "ros2",
+        "launch",
+        "lslidar_driver",
+        "lslidar_c16_launch.py",
+        "frame_id:=${frame_id}",
+        "device_ip:=${device_ip}",
+        "msop_port:=${msop_port}",
+        "difop_port:=${difop_port}",
+        "add_multicast:=${add_multicast}",
+        "group_ip:=${group_ip}",
+        "use_gps_ts:=${use_gps_ts}",
+        "lidar_type:=${lidar_type}",
+        "c16_type:=${c16_type}",
+        "c32_type:=${c32_type}",
+        "c32_fpga_type:=${c32_fpga_type}",
+        "min_range:=${min_range}",
+        "max_range:=${max_range}",
+        "distance_unit:=${distance_unit}",
+        "angle_disable_min:=${angle_disable_min}",
+        "angle_disable_max:=${angle_disable_max}",
+        "scan_num:=${scan_num}",
+        "horizontal_angle_resolution:=${horizontal_angle_resolution}",
+        "packet_rate:=${packet_rate}",
+        "topic_name:=${topic_name}",
+        "publish_scan:=${publish_scan}",
+        "pcl_type:=${pcl_type}",
+        "coordinate_opt:=${coordinate_opt}"
+      ],
+      "privileged": false,
+      "gpu": false,
+      "networkHost": true,
+      "binds": [],
+      "user": "",
+      "runtime": "",
+      "portBindings": {},
+      "mounts": []
+    },
+    "log": "",
+    "convertedCommands": "",
+    "onExit": "IGNORE"
+  },
+  "parameters": {
+    "parameters": [
+      {
+        "name": "frame_id",
+        "description": "The frame id of the lidar.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "laser_link"
+      },
+      {
+        "name": "device_ip",
+        "description": "The lidar's IP address.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "192.168.1.200"
+      },
+      {
+        "name": "msop_port",
+        "description": "The MSOP port.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "2368"
+      },
+      {
+        "name": "difop_port",
+        "description": "The DIFOP port.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "2369"
+      },
+      {
+        "name": "add_multicast",
+        "description": "Add multicast.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "false"
+      },
+      {
+        "name": "group_ip",
+        "description": "The group IP address.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "224.1.1.2"
+      },
+      {
+        "name": "use_gps_ts",
+        "description": "Use GPS timestamp.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "false"
+      },
+      {
+        "name": "lidar_type",
+        "description": "Lidar type.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "c16"
+      },
+      {
+        "name": "c16_type",
+        "description": "C16 type.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "c16_2"
+      },
+      {
+        "name": "c32_type",
+        "description": "C32 type.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "c32_2"
+      },
+      {
+        "name": "c32_fpga_type",
+        "description": "C32 FPGA type.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "3"
+      },
+      {
+        "name": "min_range",
+        "description": "Minimum range.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "0.3"
+      },
+      {
+        "name": "max_range",
+        "description": "Maximum range.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "200.0"
+      },
+      {
+        "name": "distance_unit",
+        "description": "Distance unit.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "0.25"
+      },
+      {
+        "name": "angle_disable_min",
+        "description": "Minimum disable angle.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "0"
+      },
+      {
+        "name": "angle_disable_max",
+        "description": "Maximum disable angle.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "0"
+      },
+      {
+        "name": "scan_num",
+        "description": "Number of scans.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "8"
+      },
+      {
+        "name": "horizontal_angle_resolution",
+        "description": "Horizontal angle resolution.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "0.18"
+      },
+      {
+        "name": "packet_rate",
+        "description": "Packet rate.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "840.0"
+      },
+      {
+        "name": "topic_name",
+        "description": "Topic name.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "lslidar_point_cloud"
+      },
+      {
+        "name": "publish_scan",
+        "description": "Publish scan.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "true"
+      },
+      {
+        "name": "pcl_type",
+        "description": "PCL type.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "false"
+      },
+      {
+        "name": "coordinate_opt",
+        "description": "Coordinate optimization.",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "false"
+      }
+    ]
+  },
+  "state": "COMPONENT_STATE_UNLOADED",
+  "message": "",
+  "streams": {
+    "inputStreams": [],
+    "outputStreams": [
+      {
+        "name": "scan",
+        "type": "",
+        "description": "The scan data from the lidar.",
+        "streamMode": "STREAM_MODE_TOPIC",
+        "rosTopic": {
+          "topic": "/c16/scan",
+          "type": "Messages.sensor_msgs.LaserScan",
+          "qosProfile": ""
+        },
+        "latched": false,
+        "maxRate": 0,
+        "expectedRate": 0
+      },
+      {
+        "name": "point_cloud",
+        "type": "",
+        "description": "Point cloud from the lidar.",
+        "streamMode": "STREAM_MODE_TOPIC",
+        "rosTopic": {
+          "topic": "/c16/lslidar_point_cloud",
+          "type": "Messages.sensor_msgs.PointCloud2",
+          "qosProfile": ""
+        },
+        "latched": false,
+        "maxRate": 0,
+        "expectedRate": 0
+      }
+    ]
+  },
+  "requiredDevices": [
+    {
+      "name": "laser",
+      "info": {
+        "type": "USB_PORT_TYPE_NETWORK",
+        "productId": "",
+        "vendorId": "",
+        "revision": "",
+        "serial": "",
+        "vendorName": "",
+        "productName": "",
+        "attributes": {},
+        "ports": [],
+        "portIndex": 0,
+        "simulation": false,
+        "ip": "",
+        "id": "",
+        "internalId": ""
+      },
+      "mountAs": "",
+      "optional": true
+    }
+  ],
+  "ros": {
+    "baseFrame": "base_link",
+    "rate": 10,
+    "publishTfDevices": false,
+    "generatePort": false,
+    "rosMasterUri": "",
+    "rosIp": "",
+    "autoDetectIp": false,
+    "ros2DomainId": 1
+  },
+  "tags": {},
+  "category": "Drivers/3D Lidars",
+  "simulation": false,
+  "pluginFile": "",
+  "license": "BSD",
+  "id": "eaef288e-a52f-4d9f-ae64-40fbc92e1910",
+  "uuid": "63ef1dec-1a39-42de-80a3-e34396eadf75"
+}
