@@ -1,4 +1,5 @@
 import cv2
+import os
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image, CompressedImage
@@ -12,19 +13,19 @@ class RTSP(Node):
 
         self.declare_parameter("url", "rtsp://127.0.0.1:8554/video")
         self.declare_parameter("image_topic_name", "rtsp_stream_image")
-
+        self.declare_parameter("nobuffer", True)
         self.rtsp_stream_url = self.get_parameter("url").get_parameter_value().string_value
         self.image_topic_name = self.get_parameter("image_topic_name").get_parameter_value().string_value
+        self.nobuffer = self.get_parameter("nobuffer").get_parameter_value().bool_value
+
+
+        if self.nobuffer:
+            os.environ['OPENCV_FFMPEG_CAPTURE_OPTIONS'] = 'prefer_tcp;fflags;nobuffer'
+            self.get_logger().info("Construct the FFmpeg command with nobuffer flag")
+        # Construct the FFmpeg command with nobuffer flag
+
         # Create a VideoCapture object
-        self.cap = cv2.VideoCapture(self.rtsp_stream_url)
-        flag = False
-        while not flag:
-            # Check if the VideoCapture object was successfully opened
-            if not self.cap.isOpened():
-                self.get_logger().error("Failed to open rtsp stream. " + self.rtsp_stream_url)
-                self.cap = cv2.VideoCapture(self.rtsp_stream_url)
-            else:
-                flag = True
+        self.cap = cv2.VideoCapture(self.rtsp_stream_url,cv2.CAP_FFMPEG)
 
         # Initialize the ROS publisher for the image topic
         self.image_pub = self.create_publisher(Image, f'{self.image_topic_name}', 10)
@@ -33,21 +34,26 @@ class RTSP(Node):
         # Initialize the cv_bridge object
         self.bridge = CvBridge()
 
-        # Read frames from the rtsp stream and publish them to the ROS image topic
-        while self.cap.isOpened():
-            ret, frame = self.cap.read()
+        while rclpy.ok():
+            try:
+                ret, frame = self.cap.read()
+                if not ret:
+                    self.get_logger().warn("Failed to read frame. Reconnecting...")
+                    self.cap.release()
+                    self.cap = cv2.VideoCapture(self.rtsp_stream_url,cv2.CAP_FFMPEG)
+                    continue
 
-            if not ret:
-                self.get_logger().error("Failed to read frame from rtsp stream.")
-                continue
+                # Convert and publish as before
+                ros_image = self.bridge.cv2_to_imgmsg(frame, "bgr8")
+                ros_compressed_image = self.bridge.cv2_to_compressed_imgmsg(frame, "jpeg")
+                self.image_pub.publish(ros_image)
+                self.compressed_image_pub.publish(ros_compressed_image)
 
-            # Convert the OpenCV image to a ROS image message
-            ros_image = self.bridge.cv2_to_imgmsg(frame, "bgr8")
-            ros_compressed_image = self.bridge.cv2_to_compressed_imgmsg(frame, "jpeg")
+            except Exception as e:
+                self.get_logger().error(f"Error processing frame: {str(e)}")
 
-            # Publish the ROS image message
-            self.image_pub.publish(ros_image)
-            self.compressed_image_pub.publish(ros_compressed_image)
+            # Add a small delay to prevent CPU overuse
+            rclpy.spin_once(self, timeout_sec=0.01)
 
         # Release the VideoCapture object
         self.cap.release()

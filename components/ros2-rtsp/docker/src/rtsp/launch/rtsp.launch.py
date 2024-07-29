@@ -21,18 +21,26 @@ def generate_launch_description():
         description=''
     )
 
+    nobuffer = DeclareLaunchArgument(
+        "nobuffer",
+        default_value="true",
+        description=''
+    )
+
     rtsp_node = Node(
             package='rtsp',
             executable='rtsp_node',
             name='rtsp_node',
             parameters=[{
                 "url": LaunchConfiguration('url'),
-                "image_topic_name":LaunchConfiguration('image_topic_name')
+                "image_topic_name":LaunchConfiguration('image_topic_name'),
+                "nobuffer":LaunchConfiguration('nobuffer')
             }]
         )
 
     return LaunchDescription([
         url,
         image_topic_name,
+        nobuffer,
         rtsp_node,
     ])

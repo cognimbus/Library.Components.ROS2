@@ -30,7 +30,8 @@
         "launch",
         "rtsp",
         "rtsp.launch.py",
-        "url:=${url}"
+        "url:=${url}",
+        "nobuffer:=${nobuffer}"
       ],
       "privileged": false,
       "gpu": false,
@@ -45,6 +46,13 @@
   },
   "parameters": {
     "parameters": [
+      {
+        "name": "nobuffer",
+        "description": "nobuffer",
+        "Category": "Static",
+        "node": "",
+        "booleanValue": "true"
+      },
       {
         "name": "url",
         "description": "url",
