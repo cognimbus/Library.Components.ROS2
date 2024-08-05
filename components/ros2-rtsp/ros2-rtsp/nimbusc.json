@@ -29,9 +29,11 @@
         "ros2",
         "launch",
         "rtsp",
-        "rtsp.launch.py",
-        "url:=${url}",
-        "nobuffer:=${nobuffer}"
+        "gst_rtsp.launch.py",
+        "rtsp_url:=${rtsp_url}",
+        "width:=${width}",
+        "height:=${height}",
+        "max_buffers:=${max_buffers}"
       ],
       "privileged": false,
       "gpu": false,
@@ -47,18 +49,18 @@
   "parameters": {
     "parameters": [
       {
-        "name": "nobuffer",
-        "description": "nobuffer",
-        "Category": "Static",
-        "node": "",
-        "booleanValue": "true"
-      },
-      {
-        "name": "url",
-        "description": "url",
+        "name": "rtsp_url",
+        "description": "rtsp_url",
         "Category": "Static",
         "node": "",
         "stringValue": "rtsp://127.0.0.1:8554/video"
+      },
+      {
+        "name": "max_buffers",
+        "description": "max buffers",
+        "Category": "Static",
+        "node": "",
+        "integerValue": "1"
       },
       {
         "name": "width",
@@ -87,7 +89,7 @@
         "description": "Color rectified image. RGB format.",
         "streamMode": "STREAM_MODE_TOPIC",
         "rosTopic": {
-          "topic": "/rtsp_stream_image",
+          "topic": "/camera/image_raw",
           "type": "Messages.sensor_msgs.Image",
           "qosProfile": ""
         },
@@ -101,7 +103,7 @@
         "description": "Color rectified CompressedImage. jpeg format.",
         "streamMode": "STREAM_MODE_TOPIC",
         "rosTopic": {
-          "topic": "/rtsp_stream_image/compressed",
+          "topic": "/camera/image/compressed",
           "type": "Messages.sensor_msgs.CompressedImage",
           "qosProfile": ""
         },
