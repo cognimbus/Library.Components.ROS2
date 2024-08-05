@@ -30,7 +30,7 @@
         "launch",
         "rtsp",
         "gst_rtsp.launch.py",
-        "rtsp_url:=${rtsp_url}",
+        "rtsp_url:='${rtsp_url}'",
         "width:=${width}",
         "height:=${height}",
         "max_buffers:=${max_buffers}"
