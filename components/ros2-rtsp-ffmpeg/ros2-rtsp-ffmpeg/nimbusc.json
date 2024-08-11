@@ -1,0 +1,125 @@
+{
+  "name": "nimbus/ros2-rtsp-ffmpeg",
+  "type": "COMPONENT_TYPE_COMPONENT",
+  "className": "Ros2Component",
+  "instanceName": "",
+  "description": "This package ROS 2 node for capturing frames from an RTSP (Real Time Streaming Protocol) video stream and publishing them as ROS image messages. \nLicense:  GPL",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0,
+    "build": ""
+  },
+  "start": "START_MODE_AUTO",
+  "environment": {
+    "name": "",
+    "ipAddress": "",
+    "state": "ENVIRONMENT_STATE_UNLOADED",
+    "message": "",
+    "progress": 0,
+    "requiredDevices": [],
+    "ports": [],
+    "hostIpAddress": "",
+    "variables": [],
+    "dockerInfo": {
+      "image": "cognimbus/rtsp:humble",
+      "containerId": "",
+      "imageSize": 0,
+      "commands": [
+        "ros2",
+        "launch",
+        "rtsp",
+        "ffmpeg_rtsp.launch.py",
+        "rtsp_url:='${rtsp_url}'",
+        "width:=${width}",
+        "height:=${height}"
+      ],
+      "privileged": false,
+      "gpu": false,
+      "networkHost": true,
+      "binds": [],
+      "user": "",
+      "runtime": ""
+    },
+    "log": "",
+    "convertedCommands": "",
+    "onExit": "IGNORE"
+  },
+  "parameters": {
+    "parameters": [
+      {
+        "name": "rtsp_url",
+        "description": "rtsp_url",
+        "Category": "Static",
+        "node": "",
+        "stringValue": "rtsp://127.0.0.1:8554/video"
+      },
+      {
+        "name": "width",
+        "description": "Image width.",
+        "Category": "Static",
+        "node": "",
+        "integerValue": "640"
+      },
+      {
+        "name": "height",
+        "description": "Image height.",
+        "Category": "Static",
+        "node": "",
+        "integerValue": "480"
+      }
+    ]
+  },
+  "state": "COMPONENT_STATE_UNLOADED",
+  "message": "",
+  "streams": {
+    "inputStreams": [],
+    "outputStreams": [
+      {
+        "name": "image_raw",
+        "type": "",
+        "description": "Color rectified image. RGB format.",
+        "streamMode": "STREAM_MODE_TOPIC",
+        "rosTopic": {
+          "topic": "/camera/image_raw",
+          "type": "Messages.sensor_msgs.Image",
+          "qosProfile": ""
+        },
+        "latched": false,
+        "maxRate": 0,
+        "expectedRate": 0
+      },
+      {
+        "name": "image_compressed",
+        "type": "",
+        "description": "Color rectified CompressedImage. jpeg format.",
+        "streamMode": "STREAM_MODE_TOPIC",
+        "rosTopic": {
+          "topic": "/camera/image/compressed",
+          "type": "Messages.sensor_msgs.CompressedImage",
+          "qosProfile": ""
+        },
+        "latched": false,
+        "maxRate": 0,
+        "expectedRate": 0
+      }
+    ]
+  },
+  "requiredDevices": [],
+  "ros": {
+    "baseFrame": "base_link",
+    "rate": 10,
+    "publishTfDevices": true,
+    "generatePort": false,
+    "rosMasterUri": "",
+    "rosIp": "",
+    "autoDetectIp": false,
+    "ros2DomainId": 1
+  },
+  "tags": {},
+  "category": "Drivers/RGB Cameras",
+  "simulation": false,
+  "pluginFile": "",
+  "license": "GPL",
+  "id": ""
+}
