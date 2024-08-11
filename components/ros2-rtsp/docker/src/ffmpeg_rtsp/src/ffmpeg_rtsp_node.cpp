@@ -19,7 +19,7 @@ public:
         
         this->declare_parameter("width", 1920);
         this->declare_parameter("height", 1080);
-        this->declare_parameter("rtsp_url", "rtsp://127.0.0.1:8554/video");
+        this->declare_parameter("rtsp_url", "rtsp://cogniteam:cogniCOGNI@192.168.31.237:554/stream1");
 
         // Get parameter values
         desired_width_ = this->get_parameter("width").as_int();
@@ -86,13 +86,35 @@ private:
     {
         if (av_read_frame(format_ctx_, packet_) >= 0) {
             if (packet_->stream_index == video_stream_index_) {
-                avcodec_send_packet(codec_ctx_, packet_);
-                if (avcodec_receive_frame(codec_ctx_, frame_) == 0) {
+                int ret = avcodec_send_packet(codec_ctx_, packet_);
+                if (ret < 0) {
+                    RCLCPP_WARN(this->get_logger(), "Error sending packet for decoding");
+                    av_packet_unref(packet_);
+                    return;
+                }
+                
+                while (ret >= 0) {
+                    ret = avcodec_receive_frame(codec_ctx_, frame_);
+                    if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) {
+                        break;
+                    } else if (ret < 0) {
+                        RCLCPP_WARN(this->get_logger(), "Error during decoding");
+                        break;
+                    }
+                    
                     // Convert frame to OpenCV Mat
                     cv::Mat img(frame_->height, frame_->width, CV_8UC3);
-                    SwsContext* sws_ctx = sws_getContext(frame_->width, frame_->height, codec_ctx_->pix_fmt,
-                                                         frame_->width, frame_->height, AV_PIX_FMT_BGR24,
-                                                         SWS_BILINEAR, NULL, NULL, NULL);
+                    SwsContext* sws_ctx = sws_getContext(
+                        frame_->width, frame_->height, static_cast<AVPixelFormat>(frame_->format),
+                        frame_->width, frame_->height, AV_PIX_FMT_BGR24,
+                        SWS_BILINEAR, NULL, NULL, NULL
+                    );
+                    
+                    if (!sws_ctx) {
+                        RCLCPP_ERROR(this->get_logger(), "Could not initialize SwsContext");
+                        return;
+                    }
+                    
                     uint8_t* dest[4] = {img.data, NULL, NULL, NULL};
                     int dest_linesize[4] = {img.step, 0, 0, 0};
                     sws_scale(sws_ctx, frame_->data, frame_->linesize, 0, frame_->height, dest, dest_linesize);
