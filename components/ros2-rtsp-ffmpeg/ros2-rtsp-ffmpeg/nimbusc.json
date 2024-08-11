@@ -32,7 +32,8 @@
         "ffmpeg_rtsp.launch.py",
         "rtsp_url:='${rtsp_url}'",
         "width:=${width}",
-        "height:=${height}"
+        "height:=${height}",
+        "buffer_size:=${buffer_size}"
       ],
       "privileged": false,
       "gpu": false,
@@ -67,6 +68,13 @@
         "Category": "Static",
         "node": "",
         "integerValue": "480"
+      },
+      {
+        "name": "buffer_size",
+        "description": "Buffer size.",
+        "Category": "Static",
+        "node": "",
+        "integerValue": "1"
       }
     ]
   },

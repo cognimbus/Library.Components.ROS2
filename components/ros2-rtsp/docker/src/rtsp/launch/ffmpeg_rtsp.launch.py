@@ -26,6 +26,12 @@ def generate_launch_description():
         default_value="1080",
         description=''
     )
+    buffer_size = DeclareLaunchArgument(
+        "buffer_size",
+        default_value="1",
+        description=''
+    )
+
     rtsp_node = Node(
             package='ffmpeg_rtsp',
             executable='ffmpeg_rtsp_node',
@@ -33,7 +39,8 @@ def generate_launch_description():
             parameters=[{
                 "rtsp_url": LaunchConfiguration('rtsp_url'),
                 "width":LaunchConfiguration('width'),
-                "height":LaunchConfiguration('height')
+                "height":LaunchConfiguration('height'),
+                "buffer_size":LaunchConfiguration('buffer_size'),
             }]
         )
 
@@ -41,5 +48,6 @@ def generate_launch_description():
         rtsp_url,
         width,
         height,
+        buffer_size,
         rtsp_node,
     ])
