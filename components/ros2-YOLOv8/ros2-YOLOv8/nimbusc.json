@@ -1,0 +1,130 @@
+{
+  "name": "nimbus/ros2-YOLOv8",
+  "type": "COMPONENT_TYPE_COMPONENT",
+  "className": "Ros2Component",
+  "instanceName": "",
+  "description": "",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0,
+    "build": ""
+  },
+  "start": "START_MODE_AUTO",
+  "environment": {
+    "name": "",
+    "ipAddress": "",
+    "state": "ENVIRONMENT_STATE_UNLOADED",
+    "message": "",
+    "progress": 0,
+    "requiredDevices": [],
+    "ports": [],
+    "hostIpAddress": "",
+    "variables": [],
+    "dockerInfo": {
+      "image": "cognimbus/yolo_detector:foxy",
+      "containerId": "",
+      "imageSize": 0,
+      "commands": [
+        "ros2",
+        "launch",
+        "yolo_detector",
+        "yolo_detector.launch.py"
+      ],
+      "privileged": false,
+      "gpu": false,
+      "networkHost": true,
+      "binds": [],
+      "user": "",
+      "runtime": "nvidia"
+    },
+    "log": "",
+    "convertedCommands": "",
+    "onExit": "IGNORE"
+  },
+  "parameters": {
+    "parameters": [
+      {
+        "name": "width",
+        "description": "Image width.",
+        "Category": "Static",
+        "node": "",
+        "integerValue": "640"
+      },
+      {
+        "name": "height",
+        "description": "Image height.",
+        "Category": "Static",
+        "node": "",
+        "integerValue": "480"
+      }
+    ]
+  },
+  "state": "COMPONENT_STATE_UNLOADED",
+  "message": "",
+  "streams": {
+    "inputStreams": [
+      {
+        "name": "image_raw",
+        "type": "",
+        "description": "Color rectified image. RGB format.",
+        "streamMode": "STREAM_MODE_TOPIC",
+        "rosTopic": {
+          "topic": "/camera/image_raw",
+          "type": "Messages.sensor_msgs.Image",
+          "qosProfile": ""
+        },
+        "latched": false,
+        "maxRate": 0,
+        "expectedRate": 0
+      }
+    ],
+    "outputStreams": [
+      {
+        "name": "detected_objects",
+        "type": "",
+        "description": "Color rectified image. RGB format.",
+        "streamMode": "STREAM_MODE_TOPIC",
+        "rosTopic": {
+          "topic": "/detected_objects",
+          "type": "Messages.sensor_msgs.Image",
+          "qosProfile": ""
+        },
+        "latched": false,
+        "maxRate": 0,
+        "expectedRate": 0
+      },
+      {
+        "name": "detected_objects_compressed",
+        "type": "",
+        "description": "Color rectified CompressedImage. jpeg format.",
+        "streamMode": "STREAM_MODE_TOPIC",
+        "rosTopic": {
+          "topic": "/detected_objects/compressed",
+          "type": "Messages.sensor_msgs.CompressedImage",
+          "qosProfile": ""
+        },
+        "latched": false,
+        "maxRate": 0,
+        "expectedRate": 0
+      }
+    ]
+  },
+  "requiredDevices": [],
+  "ros": {
+    "baseFrame": "base_link",
+    "rate": 10,
+    "publishTfDevices": true,
+    "generatePort": false,
+    "rosMasterUri": "",
+    "rosIp": "",
+    "autoDetectIp": false,
+    "ros2DomainId": 1
+  },
+  "tags": {},
+  "category": "Drivers/RGB Cameras",
+  "simulation": false,
+  "pluginFile": "",
+  "license": "GPL",
+  "id": ""
+}
