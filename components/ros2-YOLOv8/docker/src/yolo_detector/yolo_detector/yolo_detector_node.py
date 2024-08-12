@@ -1,11 +1,12 @@
 import rclpy
 import cv2
 from rclpy.node import Node
-from sensor_msgs.msg import Image,CompressedImage
+from sensor_msgs.msg import Image, CompressedImage
 from cv_bridge import CvBridge
 from ultralytics import YOLO
 import torch
 import numpy as np
+from std_msgs.msg import String
 
 class YoloDetectorNode(Node):
     def __init__(self):
@@ -17,10 +18,17 @@ class YoloDetectorNode(Node):
             10)
         self.publisher = self.create_publisher(Image, '/detected_objects', 10)
         self.compressed_image_publisher = self.create_publisher(CompressedImage, '/detected_objects/compressed', 10)
+        self.class_publisher = self.create_publisher(String, '/detected_classes', 10)
         self.cv_bridge = CvBridge()
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.get_logger().info(f"Using device: {self.device}")
         self.model = YOLO('/yolo_detector_ws/yolov8n.pt')  # Load the YOLOv8 model
+        self.color_map = {}
+
+    def get_color(self, class_id):
+        if class_id not in self.color_map:
+            self.color_map[class_id] = tuple(np.random.randint(0, 255, 3).tolist())
+        return self.color_map[class_id]
 
     def image_callback(self, msg):
         # Convert ROS Image message to OpenCV image
@@ -28,6 +36,11 @@ class YoloDetectorNode(Node):
 
         # Perform YOLOv8 detection
         results = self.model(cv_image)
+
+        detected_classes = set()
+
+        # Create a copy of the image for drawing
+        overlay = cv_image.copy()
 
         # Draw bounding boxes and labels on the image
         for result in results:
@@ -37,9 +50,25 @@ class YoloDetectorNode(Node):
 
             for box, cls, conf in zip(boxes, classes, confidences):
                 x1, y1, x2, y2 = box
+                color = self.get_color(cls)
                 label = f'{result.names[cls]} {conf:.2f}'
-                cv2.rectangle(cv_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.putText(cv_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+                
+                # Draw filled rectangle on overlay
+                cv2.rectangle(overlay, (x1, y1), (x2, y2), color, -1)
+                
+                # Add class to detected classes
+                detected_classes.add(result.names[cls])
+
+            # Blend the overlay with the original image
+            alpha = 0.4  # Transparency factor
+            cv_image = cv2.addWeighted(overlay, alpha, cv_image, 1 - alpha, 0)
+
+            # Draw text labels
+            for box, cls, conf in zip(boxes, classes, confidences):
+                x1, y1, x2, y2 = box
+                color = self.get_color(cls)
+                label = f'{result.names[cls]} {conf:.2f}'
+                cv2.putText(cv_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
         # Convert the processed image back to ROS Image message
         output_msg = self.cv_bridge.cv2_to_imgmsg(cv_image, encoding='bgr8')
@@ -47,8 +76,13 @@ class YoloDetectorNode(Node):
 
         # Publish the processed image
         self.publisher.publish(output_msg)
-        output_msg_compressed = self.cv_bridge.cv2_to_compressed_imgmsg(cv_image,'jpeg')
+        output_msg_compressed = self.cv_bridge.cv2_to_compressed_imgmsg(cv_image, 'jpeg')
         self.compressed_image_publisher.publish(output_msg_compressed)
+
+        # Publish detected classes
+        classes_msg = String()
+        classes_msg.data = ', '.join(detected_classes)
+        self.class_publisher.publish(classes_msg)
 
 def main(args=None):
     rclpy.init(args=args)
