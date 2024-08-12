@@ -1,5 +1,5 @@
 {
-  "name": "nimbus/ros2-YOLOv8",
+  "name": "cogniteam/ultralytics-yolov8",
   "type": "COMPONENT_TYPE_COMPONENT",
   "className": "Ros2Component",
   "instanceName": "",
@@ -7,7 +7,7 @@
   "version": {
     "major": 1,
     "minor": 0,
-    "patch": 0,
+    "patch": 7,
     "build": ""
   },
   "start": "START_MODE_AUTO",
@@ -36,7 +36,9 @@
       "networkHost": true,
       "binds": [],
       "user": "",
-      "runtime": "nvidia"
+      "runtime": "nvidia",
+      "portBindings": {},
+      "mounts": []
     },
     "log": "",
     "convertedCommands": "",
@@ -107,6 +109,20 @@
         "latched": false,
         "maxRate": 0,
         "expectedRate": 0
+      },
+      {
+        "name": "detected_classes",
+        "type": "",
+        "description": "Color rectified CompressedImage. jpeg format.",
+        "streamMode": "STREAM_MODE_TOPIC",
+        "rosTopic": {
+          "topic": "/detected_classes",
+          "type": "Messages.std_msgs.String",
+          "qosProfile": ""
+        },
+        "latched": false,
+        "maxRate": 0,
+        "expectedRate": 0
       }
     ]
   },
@@ -122,9 +138,10 @@
     "ros2DomainId": 1
   },
   "tags": {},
-  "category": "Drivers/RGB Cameras",
+  "category": "Algorithms/Object detection",
   "simulation": false,
   "pluginFile": "",
   "license": "GPL",
-  "id": ""
+  "id": "9adfacd7-7426-4f7a-ba15-5988311149db",
+  "uuid": "cdf6af26-8a0e-47ce-a35b-178d346bde77"
 }
