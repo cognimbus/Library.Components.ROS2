@@ -1,4 +1,4 @@
-FROM ros:humble
+FROM cognimbus/rtsp:humble
 
 SHELL ["/bin/bash", "-c"]
 

@@ -41,28 +41,10 @@ public:
 private:
     void timer_callback()
     {
-        cv::Mat frame;
-        if (cap_.read(frame)) {
-            if (frame.empty()) {
-                RCLCPP_WARN(this->get_logger(), "Received empty frame");
-                return;
-            }
-
-            // Resize the image if necessary
-            if (frame.cols != desired_width_ || frame.rows != desired_height_) {
-                cv::resize(frame, frame, cv::Size(desired_width_, desired_height_), 0, 0, cv::INTER_LINEAR);
-            }
-
-            // Convert OpenCV Mat to ROS Image message
-            sensor_msgs::msg::Image::SharedPtr msg = cv_bridge::CvImage(std_msgs::msg::Header(), "bgr8", frame).toImageMsg();
-            publisher_->publish(*msg);
-
-            sensor_msgs::msg::CompressedImage compressed_msg;
-            compressed_msg.header.stamp = this->now();
-            compressed_msg.format = "jpeg";
-            cv::imencode(".jpg", frame, compressed_msg.data);
-            compressed_publisher_->publish(compressed_msg);
-        } else {
+        if (!cap_.isOpened()) {
+            RCLCPP_ERROR(this->get_logger(), "Failed to open RTSP stream.");
+            return;
+        }else {
             RCLCPP_WARN(this->get_logger(), "Failed to read frame from stream");
             
             // Attempt to reconnect
@@ -75,6 +57,27 @@ private:
                 cap_.set(cv::CAP_PROP_BUFFERSIZE, buffer_size_);
             }
         }
+        cv::Mat frame;
+        while (cap_.read(frame)) {
+            if (frame.empty()) {
+                RCLCPP_WARN(this->get_logger(), "Received empty frame");
+                return;
+            }
+
+            // Resize the image if necessary
+            if (frame.cols != desired_width_ || frame.rows != desired_height_) {
+                cv::resize(frame, frame, cv::Size(desired_width_, desired_height_), 0, 0, cv::INTER_LINEAR);
+            }
+
+            // Convert OpenCV Mat to ROS Image message
+            auto tempMsg = cv_bridge::CvImage(std_msgs::msg::Header(), "bgr8", frame);
+            sensor_msgs::msg::Image::SharedPtr msg = tempMsg.toImageMsg();
+            publisher_->publish(*msg);
+
+            sensor_msgs::msg::CompressedImage::SharedPtr compressed_msg = tempMsg.toCompressedImageMsg();
+
+            compressed_publisher_->publish(*compressed_msg);
+        } 
     }
 
     rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_;
