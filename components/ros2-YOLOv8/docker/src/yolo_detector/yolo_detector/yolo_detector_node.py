@@ -4,13 +4,16 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image, CompressedImage
 from cv_bridge import CvBridge
 from ultralytics import YOLO
+import json
 import torch
 import numpy as np
 from std_msgs.msg import String
 
 class YoloDetectorNode(Node):
-    def __init__(self):
+    def __init__(self):        
         super().__init__('yolo_detector_node')
+        
+        self.get_logger().info(f"Initializing YOLO")
         self.subscription = self.create_subscription(
             Image,
             '/camera/image_raw',
@@ -21,9 +24,17 @@ class YoloDetectorNode(Node):
         self.class_publisher = self.create_publisher(String, '/detected_classes', 10)
         self.cv_bridge = CvBridge()
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.get_logger().info(f"Using device: {self.device}")
+        self.get_logger().info(f"YOLO Using device: {self.device}")
         self.model = YOLO('/yolo_detector_ws/yolov8n.pt')  # Load the YOLOv8 model
-        self.color_map = {}
+        self.color_map:dict = None
+        self.load_color_map()
+        self.get_logger().info(f"YOLO initialization complete")
+        
+
+    def load_color_map(self) -> None:
+        with open('/yolo_detector_ws/data.json', 'r') as file:
+            self.color_map = json.load(file)
+                
 
     def get_color(self, class_id):
         if class_id not in self.color_map:
