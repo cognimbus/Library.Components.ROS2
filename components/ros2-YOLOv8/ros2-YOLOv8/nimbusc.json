@@ -29,7 +29,8 @@
         "ros2",
         "launch",
         "yolo_detector",
-        "yolo_detector.launch.py"
+        "yolo_detector.launch.py",
+        "threshold:=${threshold}"
       ],
       "privileged": false,
       "gpu": false,
@@ -59,6 +60,13 @@
         "Category": "Static",
         "node": "",
         "integerValue": "480"
+      },
+      {
+        "name": "threshold",
+        "description": "threshold.",
+        "Category": "Static",
+        "node": "",
+        "doubleValue": "0.0"
       }
     ]
   },

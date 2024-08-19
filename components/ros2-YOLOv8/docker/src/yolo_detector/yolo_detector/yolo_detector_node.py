@@ -14,6 +14,7 @@ class YoloDetectorNode(Node):
         super().__init__('yolo_detector_node')
         
         self.get_logger().info(f"Initializing YOLO")
+        
         self.subscription = self.create_subscription(
             Image,
             '/camera/image_raw',
@@ -22,6 +23,10 @@ class YoloDetectorNode(Node):
         self.publisher = self.create_publisher(Image, '/detected_objects', 10)
         self.compressed_image_publisher = self.create_publisher(CompressedImage, '/detected_objects/compressed', 10)
         self.class_publisher = self.create_publisher(String, '/detected_classes', 10)
+        
+        self.declare_parameter("threshold", 0.0)
+        self.threshold = self.get_parameter("threshold").get_parameter_value().double_value
+        
         self.cv_bridge = CvBridge()
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.get_logger().info(f"YOLO Using device: {self.device}")
@@ -35,7 +40,6 @@ class YoloDetectorNode(Node):
         with open('/yolo_detector_ws/data.json', 'r') as file:
             self.color_map = json.load(file)
                 
-
     def get_color(self, class_id):
         if class_id not in self.color_map:
             self.color_map[class_id] = tuple(np.random.randint(0, 255, 3).tolist())
@@ -60,6 +64,9 @@ class YoloDetectorNode(Node):
             confidences = result.boxes.conf.cpu().numpy()
 
             for box, cls, conf in zip(boxes, classes, confidences):
+                if conf<self.threshold:
+                    continue
+                
                 x1, y1, x2, y2 = box
                 color = self.get_color(cls)
                 label = f'{result.names[cls]} {conf:.2f}'
@@ -76,6 +83,9 @@ class YoloDetectorNode(Node):
 
             # Draw text labels
             for box, cls, conf in zip(boxes, classes, confidences):
+                if conf<self.threshold:
+                    continue
+                
                 x1, y1, x2, y2 = box
                 color = self.get_color(cls)
                 label = f'{result.names[cls]} {conf:.2f}'
