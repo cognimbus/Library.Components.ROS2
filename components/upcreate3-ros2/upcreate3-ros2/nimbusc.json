@@ -1,0 +1,86 @@
+{
+    "name": "nimbus/ros2-upcreate3-driver",
+    "type": "COMPONENT_TYPE_COMPONENT",
+    "className": "Ros2Component",
+    "instanceName": "",
+    "description": "This package is a ros2 driver for the upcreate3. \nLicense:  MIT",
+    "version": {
+        "major": 1,
+        "minor": 0,
+        "patch": 0,
+        "build": ""
+    },
+    "start": "START_MODE_AUTO",
+    "environment": {
+        "name": "",
+        "ipAddress": "",
+        "state": "ENVIRONMENT_STATE_UNLOADED",
+        "message": "",
+        "progress": 0,
+        "requiredDevices": [],
+        "ports": [],
+        "hostIpAddress": "",
+        "variables": [],
+        "dockerInfo": {
+            "image": "cognimbus/upcreate3:galactic",
+            "containerId": "",
+            "imageSize": 0,
+            "commands": [
+                "ros2",
+                "launch",
+                "upcreate3_bringup",
+                "bringup.launch.py"
+            ],
+            "privileged": true,
+            "gpu": false,
+            "networkHost": true,
+            "binds": [],
+            "user": "",
+            "runtime": ""
+        },
+        "log": "",
+        "convertedCommands": "",
+        "onExit": "IGNORE"
+    },
+    "parameters": {
+        "parameters": [
+            {
+                "name": "width",
+                "description": "Image width.",
+                "Category": "Static",
+                "node": "",
+                "integerValue": "640"
+              },
+              {
+                "name": "height",
+                "description": "Image height.",
+                "Category": "Static",
+                "node": "",
+                "integerValue": "480"
+              }
+        ]
+    },
+    "state": "COMPONENT_STATE_UNLOADED",
+    "message": "",
+    "streams": {
+        "inputStreams": [],
+        "outputStreams": []
+    },
+    "requiredDevices": [],
+    "ros": {
+        "baseFrame": "base_link",
+        "rate": 10,
+        "publishTfDevices": true,
+        "generatePort": false,
+        "rosMasterUri": "",
+        "rosIp": "",
+        "autoDetectIp": false,
+        "ros2DomainId": 1
+    },
+    "tags": {},
+    "category": "",
+    "simulation": false,
+    "pluginFile": "",
+    "license": "MIT",
+    "id": "366f3302-9d5a-44f2-a883-2ae0dbf09101"
+}
