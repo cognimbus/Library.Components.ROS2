@@ -1,15 +1,16 @@
 ARG JETPACK_VERSION=5
 
-
 FROM ultralytics/ultralytics:latest-jetson-jetpack${JETPACK_VERSION}
 ARG ROS_EDITION=foxy
 SHELL ["/bin/bash", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
-RUN rm -rf /yolo_detector_ws
+
 WORKDIR /yolo_detector_ws
 COPY ./src /yolo_detector_ws/src
+COPY yolov8n.pt /yolo_detector_ws/
+COPY data.json /yolo_detector_ws/
 
 RUN apt update  && \
 apt install -y locales    && \    
