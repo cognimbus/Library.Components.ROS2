@@ -1,0 +1,97 @@
+{
+  "name": "cogniteam/upcreate3-object-detection",
+  "type": "COMPONENT_TYPE_COMPONENT",
+  "className": "Ros2Component",
+  "instanceName": "",
+  "description": "",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 7,
+    "build": ""
+  },
+  "start": "START_MODE_AUTO",
+  "environment": {
+    "name": "",
+    "ipAddress": "",
+    "state": "ENVIRONMENT_STATE_UNLOADED",
+    "message": "",
+    "progress": 0,
+    "requiredDevices": [],
+    "ports": [],
+    "hostIpAddress": "",
+    "variables": [],
+    "dockerInfo": {
+      "image": "cognimbus/upcreate3-object-detection:humble",
+      "containerId": "",
+      "imageSize": 0,
+      "commands": [
+        "ros2",
+        "launch",
+        "upcreate3_bringup",
+        "object_detection.launch.py",
+        "threshold:=${threshold}"
+      ],
+      "privileged": false,
+      "gpu": false,
+      "networkHost": false,
+      "binds": [],
+      "user": "",
+      "runtime": "nvidia",
+      "portBindings": {},
+      "mounts": []
+    },
+    "log": "",
+    "convertedCommands": "",
+    "onExit": "IGNORE"
+  },
+  "parameters": {
+    "parameters": [
+      {
+        "name": "width",
+        "description": "Image width.",
+        "Category": "Static",
+        "node": "",
+        "integerValue": "640"
+      },
+      {
+        "name": "height",
+        "description": "Image height.",
+        "Category": "Static",
+        "node": "",
+        "integerValue": "480"
+      },
+      {
+        "name": "threshold",
+        "description": "threshold.",
+        "Category": "Static",
+        "node": "",
+        "doubleValue": "0.0"
+      }
+    ]
+  },
+  "state": "COMPONENT_STATE_UNLOADED",
+  "message": "",
+  "streams": {
+    "inputStreams": [],
+    "outputStreams": []
+  },
+  "requiredDevices": [],
+  "ros": {
+    "baseFrame": "base_link",
+    "rate": 10,
+    "publishTfDevices": true,
+    "generatePort": false,
+    "rosMasterUri": "",
+    "rosIp": "",
+    "autoDetectIp": false,
+    "ros2DomainId": 1
+  },
+  "tags": {},
+  "category": "Algorithms/Object detection",
+  "simulation": false,
+  "pluginFile": "",
+  "license": "GPL",
+  "id": "9adfacd7-7426-4f7a-ba15-5988311149db",
+  "uuid": "cdf6af26-8a0e-47ce-a35b-178d346bde77"
+}
