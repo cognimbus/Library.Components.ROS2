@@ -32,12 +32,12 @@
         "object_detection.launch.py",
         "threshold:=${threshold}"
       ],
-      "privileged": false,
+      "privileged": true,
       "gpu": false,
       "networkHost": false,
       "binds": [],
       "user": "",
-      "runtime": "nvidia",
+      "runtime": "",
       "portBindings": {},
       "mounts": []
     },

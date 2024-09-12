@@ -7,6 +7,8 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image, CompressedImage
 from std_msgs.msg import String
 from cv_bridge import CvBridge
+# openvino
+import openvino as ov
 
 # YOLO
 from ultralytics import YOLO
@@ -38,7 +40,7 @@ class YoloDetectorNode(Node):
         self.cv_bridge = CvBridge()
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.get_logger().info(f"YOLO Using device: {self.device}")
-        self.model = YOLO('/upcreate3_object_detection_ws/yolov8n.pt')  # Load the YOLOv8 model
+        self.model = YOLO("yolov8n_openvino_model/")  # Load the YOLOv8 model
         self.color_map:dict = None
         self.load_color_map()
         self.get_logger().info(f"YOLO initialization complete")
