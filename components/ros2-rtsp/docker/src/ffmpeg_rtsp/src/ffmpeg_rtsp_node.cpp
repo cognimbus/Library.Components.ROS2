@@ -24,15 +24,7 @@ public:
         publisher_ = this->create_publisher<sensor_msgs::msg::Image>("camera/image_raw", 10);
         compressed_publisher_ = this->create_publisher<sensor_msgs::msg::CompressedImage>("camera/image/compressed", 10);
         
-        cap_.open(rtsp_url, cv::CAP_FFMPEG);
-        
-        if (!cap_.isOpened()) {
-            RCLCPP_ERROR(this->get_logger(), "Failed to open RTSP stream.");
-            return;
-        }
-        
-        // Set buffer size to 1 to minimize latency
-        cap_.set(cv::CAP_PROP_BUFFERSIZE, buffer_size_);
+        this->open_rtsp_stream();
 
         timer_ = this->create_wall_timer(std::chrono::milliseconds(33), std::bind(&RtspPublisherNode::timer_callback, this));
         
@@ -42,20 +34,9 @@ private:
     void timer_callback()
     {
         if (!cap_.isOpened()) {
-            RCLCPP_ERROR(this->get_logger(), "Failed to open RTSP stream.");
+            RCLCPP_ERROR(this->get_logger(), "Failed to connect to RTSP stream.");
+            this->open_rtsp_stream();
             return;
-        }else {
-            RCLCPP_WARN(this->get_logger(), "Failed to read frame from stream");
-            
-            // Attempt to reconnect
-            cap_.release();
-            cap_.open(this->rtsp_url, cv::CAP_FFMPEG);
-            if (!cap_.isOpened()) {
-                RCLCPP_ERROR(this->get_logger(), "Failed to reconnect to RTSP stream.");
-            } else {
-                RCLCPP_INFO(this->get_logger(), "Successfully reconnected to RTSP stream.");
-                cap_.set(cv::CAP_PROP_BUFFERSIZE, buffer_size_);
-            }
         }
         cv::Mat frame;
         while (cap_.read(frame)) {
@@ -79,7 +60,18 @@ private:
             compressed_publisher_->publish(*compressed_msg);
         } 
     }
-
+    void open_rtsp_stream(){
+        RCLCPP_INFO(this->get_logger(), "Trying to connected to RTSP stream.");
+        // Attempt to reconnect
+        cap_.release();
+        cap_.open(this->rtsp_url, cv::CAP_FFMPEG);
+        if (!cap_.isOpened()) {
+            RCLCPP_ERROR(this->get_logger(), "Failed to connect to RTSP stream.");
+        } else {
+            RCLCPP_INFO(this->get_logger(), "Successfully connected to RTSP stream.");
+            cap_.set(cv::CAP_PROP_BUFFERSIZE, buffer_size_);
+        }
+    }
     rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_;
     rclcpp::Publisher<sensor_msgs::msg::CompressedImage>::SharedPtr compressed_publisher_;
     rclcpp::TimerBase::SharedPtr timer_;

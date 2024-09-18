@@ -18,6 +18,6 @@ docker buildx inspect --bootstrap
 #
 
 
-docker buildx build --platform linux/arm64,linux/amd64 -t cognimbus/rtsp:humble --push .
+docker buildx build --platform linux/arm64,linux/amd64 -t cognimbus/rtsp:humbletest --push .
 
 

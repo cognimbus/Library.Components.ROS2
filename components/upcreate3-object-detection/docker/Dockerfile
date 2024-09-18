@@ -8,9 +8,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
 
-RUN apt update && update-alternatives --install /usr/bin/python3 python3 /opt/conda/bin/python3 1
-
-RUN apt install -y locales  && \
+RUN apt update && \
+    update-alternatives --install /usr/bin/python3 python3 /opt/conda/bin/python3 1 && \
+    apt install -y locales  && \
     locale-gen en_US en_US.UTF-8 && \
     export LANG=en_US.UTF-8 && \
     apt install -y software-properties-common && \
