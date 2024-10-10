@@ -18,6 +18,6 @@ docker buildx inspect --bootstrap
 #
 
 
-docker buildx build --platform linux/arm64 -t cognimbus/upcreate3-object-detection:humble --push .
+docker buildx build --platform linux/amd64 -t cognimbus/upcreate3-object-detection:humble --push .
 
 

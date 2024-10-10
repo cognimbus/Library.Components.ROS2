@@ -17,5 +17,4 @@ sudo docker buildx inspect --bootstrap
 # on the terminal (inside the folder of the Dockerfile
 #
 
-
-sudo docker buildx build --platform linux/arm64,linux/amd64 -t cognimbus/ros2-realsense-camera:humble --push .
+docker buildx build --platform linux/arm64,linux/amd64 -t cognimbus/ros2-realsense-camera:humble --push .

@@ -35,21 +35,23 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # upcreate3 folders
-    upcreate3_bringup_path = get_package_share_directory('upcreate3_bringup')
     upcreate3_control_path = get_package_share_directory('upcreate3_control')
+    realsense_path = get_package_share_directory('realsense2_camera')
 
 
-    # include folder in launch directory
-    include_path = PathJoinSubstitution(
-        [upcreate3_bringup_path, 'launch', 'include'])
 
     # realsense launcher
+
     realsense_launch_file = PathJoinSubstitution(
-        [include_path, '.', 'realsense.launch.py']
-    )
+        [realsense_path, 'launch', 'rs_launch.py'])
     
     realsense_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(realsense_launch_file)
+        PythonLaunchDescriptionSource(realsense_launch_file),
+        launch_arguments = {'align_depth.enable': 'true',
+                            'initial_reset'     : 'true',
+                            'pointcloud.enable' : 'false',
+                            'rgb_camera.color_profile':'640x480x30'
+                           }.items()
     )
 
     # twist_mux
@@ -72,7 +74,7 @@ def generate_launch_description():
             executable='yolo_detector_node',
             name='yolo_detector_node',
             remappings=[
-                ('/camera/image_raw','/camera/color/image_raw'),
+                ('/camera/image_raw','/camera/camera/color/image_raw'),
             ],
             parameters=[{
                 "threshold": LaunchConfiguration('threshold')
