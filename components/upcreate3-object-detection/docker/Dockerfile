@@ -1,70 +1,68 @@
 
-# FROM ubuntu:22.04
-FROM cognimbus/upcreate3-object-detection:humble
+FROM ubuntu:22.04
 
 ARG ROS_EDITION=humble
 SHELL ["/bin/bash", "-c"]
-# ENV PYTHONUNBUFFERED=1 \
-#     PYTHONDONTWRITEBYTECODE=1 \
-#     PIP_NO_CACHE_DIR=1 \
-#     PIP_BREAK_SYSTEM_PACKAGES=1 \
-#     DEBIAN_FRONTEND=noninteractive \
-#     TZ=Etc/UTC
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_BREAK_SYSTEM_PACKAGES=1 \
+    DEBIAN_FRONTEND=noninteractive \
+    TZ=Etc/UTC
 
-# ADD https://github.com/ultralytics/assets/releases/download/v0.0.0/Arial.ttf \
-#     https://github.com/ultralytics/assets/releases/download/v0.0.0/Arial.Unicode.ttf \
-#     /root/.config/Ultralytics/
-# RUN apt update \
-#     && apt install --no-install-recommends -y python3-pip git zip unzip wget curl htop libgl1 libglib2.0-0 libpython3-dev gnupg g++ libusb-1.0-0
+ADD https://github.com/ultralytics/assets/releases/download/v0.0.0/Arial.ttf \
+    https://github.com/ultralytics/assets/releases/download/v0.0.0/Arial.Unicode.ttf \
+    /root/.config/Ultralytics/
+RUN apt update \
+    && apt install --no-install-recommends -y python3-pip git zip unzip wget curl htop libgl1 libglib2.0-0 libpython3-dev gnupg g++ libusb-1.0-0
 
-# # Install pip packages
-# RUN python3 -m pip install --upgrade pip wheel
+# Install pip packages
+RUN python3 -m pip install --upgrade pip wheel
 
 
-# # Creates a symbolic link to make 'python' point to 'python3'
-# RUN ln -sf /usr/bin/python3 /usr/bin/python
+# Creates a symbolic link to make 'python' point to 'python3'
+RUN ln -sf /usr/bin/python3 /usr/bin/python
 
-# RUN apt update && \
-#     apt install -y locales  && \
-#     locale-gen en_US en_US.UTF-8 && \
-#     export LANG=en_US.UTF-8 && \
-#     apt install -y software-properties-common && \
-#     add-apt-repository universe && \
-#     apt update && apt install curl -y && \
-#     curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
-#     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null && \
-#     apt update && \
-#     apt install -y tzdata && \
-#     ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
-#     dpkg-reconfigure -f noninteractive tzdata && \
-#     if [ "$ROS_EDITION" = "foxy" ]; then \
-#             apt install -y ros-foxy-ros-base python3-argcomplete; \
-#             # Action A
-#         elif [ "$ROS_EDITION" = "humble" ]; then \
-#             apt install -y ros-humble-ros-base; \
-#             # Action B
-#         else \
-#             exit 0 ; \
-#             # Default action
-#         fi && \
-#     apt install -y python3-colcon-common-extensions   && \
-#     apt install -y libboost-all-dev && \
-#     ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime  && \
-#     dpkg-reconfigure -f noninteractive tzdata  && \
-#     apt-get update && apt-get install ros-$ROS_EDITION-cv-bridge ros-$ROS_EDITION-librealsense2 -y && \
-#     apt-get install ros-$ROS_EDITION-message-filters ros-$ROS_EDITION-image-transport -y && \
-#     apt-get install ros-$ROS_EDITION-realsense2-camera -y && \
-#     rm -rf /var/lib/apt/lists/* && \
-#     apt-get update && apt-get install -y libssl-dev libusb-1.0-0-dev pkg-config libgtk-3-dev && \
-#     apt-get install -y libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev && \
-#     apt update && apt install -y ros-$ROS_EDITION-librealsense2* && \
-#     apt install -y python3-rosdep && \
-#     rosdep init && rosdep update && \
-#     pip install -U openvino && \
-#     pip3 install catkin_pkg && \
-#     pip3 install ultralytics
+RUN apt update && \
+    apt install -y locales  && \
+    locale-gen en_US en_US.UTF-8 && \
+    export LANG=en_US.UTF-8 && \
+    apt install -y software-properties-common && \
+    add-apt-repository universe && \
+    apt update && apt install curl -y && \
+    curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null && \
+    apt update && \
+    apt install -y tzdata && \
+    ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    if [ "$ROS_EDITION" = "foxy" ]; then \
+            apt install -y ros-foxy-ros-base python3-argcomplete; \
+            # Action A
+        elif [ "$ROS_EDITION" = "humble" ]; then \
+            apt install -y ros-humble-ros-base; \
+            # Action B
+        else \
+            exit 0 ; \
+            # Default action
+        fi && \
+    apt install -y python3-colcon-common-extensions   && \
+    apt install -y libboost-all-dev && \
+    ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime  && \
+    dpkg-reconfigure -f noninteractive tzdata  && \
+    apt-get update && apt-get install ros-$ROS_EDITION-cv-bridge ros-$ROS_EDITION-librealsense2 -y && \
+    apt-get install ros-$ROS_EDITION-message-filters ros-$ROS_EDITION-image-transport -y && \
+    apt-get install ros-$ROS_EDITION-realsense2-camera -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get update && apt-get install -y libssl-dev libusb-1.0-0-dev pkg-config libgtk-3-dev && \
+    apt-get install -y libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev && \
+    apt update && apt install -y ros-$ROS_EDITION-librealsense2* && \
+    apt install -y python3-rosdep && \
+    rosdep init && rosdep update && \
+    pip install -U openvino && \
+    pip3 install catkin_pkg && \
+    pip3 install ultralytics
 
-RUN rm -rf /upcreate3_object_detection_ws
 WORKDIR /upcreate3_object_detection_ws/src
 
 RUN git clone -b $ROS_EDITION https://github.com/ros-perception/vision_opencv.git && \
