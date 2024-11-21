@@ -1,0 +1,337 @@
+{
+    "name": "nimbus/ros2-realsense-d435",
+    "type": "COMPONENT_TYPE_COMPONENT",
+    "className": "Ros2Component",
+    "instanceName": "",
+    "description": "Intel Realsense D435 ROS2 driver\nLicense: Apache 2.0",
+    "start": "START_MODE_AUTO",
+    "environment": {
+      "name": "",
+      "ipAddress": "",
+      "state": "ENVIRONMENT_STATE_UNLOADED",
+      "message": "",
+      "progress": 0,
+      "requiredDevices": [],
+      "ports": [],
+      "hostIpAddress": "",
+      "variables": [],
+      "dockerInfo": {
+        "image": "cognimbus/ros2-realsense-camera:humble",
+        "containerId": "",
+        "imageSize": 0,
+        "commands": [
+          "ros2",
+          "launch",
+          "realsense2_camera",
+          "rs_launch.py",
+          "camera_name:=${camera_name}",
+          "serial_no:=${serial_no}",
+          "unite_imu_method:=${unite_imu_method}",
+          "enable_depth:=${enable_depth}",
+          "enable_color:=${enable_color}",
+          "enable_infra1:=${enable_infra1}",
+          "enable_infra2:=${enable_infra2}",
+          "enable_fisheye1:=${enable_fisheye1}",
+          "enable_fisheye2:=${enable_fisheye2}",
+          "enable_gyro:=${enable_gyro}",
+          "enable_accel:=${enable_accel}",
+          "gyro_fps:=${gyro_fps}",
+          "accel_fps:=${accel_fps}",
+          "tf_publish_rate:=${tf_publish_rate}"
+        ],
+        "privileged": true,
+        "gpu": false,
+        "networkHost": false,
+        "binds": []
+      },
+      "log": "",
+      "convertedCommands": "",
+      "onExit": "IGNORE"
+    },
+    "parameters": {
+      "parameters": [
+        {
+          "name": "camera_name",
+          "description": "Camera unique name",
+          "Category": "Static",
+          "node": "",
+          "stringValue": "camera"
+        },
+        {
+          "name": "serial_no",
+          "description": "It will attach to the device with the given serial number (serial_no) number",
+          "Category": "Static",
+          "node": "",
+          "stringValue": "''"
+        },
+        {
+          "name": "unite_imu_method",
+          "description": "[0-None, 1-copy, 2-linear_interpolation]",
+          "Category": "Static",
+          "node": "",
+          "integerValue": "0"
+        },
+        {
+          "name": "enable_depth",
+          "description": "Enable depth stream",
+          "Category": "Static",
+          "node": "",
+          "booleanValue": "true"
+        },
+        {
+          "name": "enable_color",
+          "description": "Enable color stream",
+          "Category": "Static",
+          "node": "",
+          "booleanValue": "true"
+        },
+        {
+          "name": "enable_infra1",
+          "description": "If set to true, enable stream for infra1",
+          "Category": "Static",
+          "node": "",
+          "booleanValue": "false"
+        },
+        {
+          "name": "enable_infra2",
+          "description": "If set to true, enable stream for infra2",
+          "Category": "Static",
+          "node": "",
+          "booleanValue": "false"
+        },
+        {
+          "name": "enable_fisheye1",
+          "description": "If set to true, enable stream for fisheye1",
+          "Category": "Static",
+          "node": "",
+          "booleanValue": "false"
+        },
+        {
+          "name": "enable_fisheye2",
+          "description": "If set to true, enable stream for fisheye2",
+          "Category": "Static",
+          "node": "",
+          "booleanValue": "false"
+        },
+        {
+          "name": "enable_gyro",
+          "description": "If set to true, enable stream for gyro",
+          "Category": "Static",
+          "node": "",
+          "booleanValue": "false"
+        },
+        {
+          "name": "enable_accel",
+          "description": "If set to true, enable stream for accel",
+          "Category": "Static",
+          "node": "",
+          "booleanValue": "false"
+        },
+        {
+          "name": "gyro_fps",
+          "description": "Specify the required FPS for the gyro stream",
+          "Category": "Static",
+          "node": "",
+          "integerValue": "0"
+        },
+        {
+          "name": "accel_fps",
+          "description": "Specify the required FPS for the accel stream",
+          "Category": "Static",
+          "node": "",
+          "integerValue": "0"
+        },
+        {
+          "name": "tf_publish_rate",
+          "description": "Rate of publishing static_tf",
+          "Category": "Static",
+          "node": "",
+          "integerValue": "10"
+        }
+      ]
+    },
+    "state": "COMPONENT_STATE_UNLOADED",
+    "message": "",
+    "streams": {
+      "inputStreams": [],
+      "outputStreams": [
+        {
+          "name": "color_image_raw",
+          "type": "",
+          "description": "Color rectified image. RGB format.",
+          "streamMode": "STREAM_MODE_TOPIC",
+          "rosTopic": {
+            "topic": "/camera/color/image_raw",
+            "type": "Messages.sensor_msgs.Image",
+            "qosProfile": ""
+          },
+          "latched": false,
+          "maxRate": 0,
+          "expectedRate": 0
+        },
+        {
+          "name": "color_camera_info",
+          "type": "",
+          "description": "Color camera calibration and metadata.",
+          "streamMode": "STREAM_MODE_TOPIC",
+          "rosTopic": {
+            "topic": "/camera/color/camera_info",
+            "type": "Messages.sensor_msgs.CameraInfo",
+            "qosProfile": ""
+          },
+          "latched": false,
+          "maxRate": 0,
+          "expectedRate": 0
+        },
+        {
+          "name": "infra_image_left",
+          "type": "",
+          "description": "Raw uint16 Infra Red image.",
+          "streamMode": "STREAM_MODE_TOPIC",
+          "rosTopic": {
+            "topic": "/camera/infra1/image_rect_raw",
+            "type": "Messages.sensor_msgs.Image",
+            "qosProfile": ""
+          },
+          "latched": false,
+          "maxRate": 0,
+          "expectedRate": 0
+        },
+        {
+          "name": "infra_image_right",
+          "type": "",
+          "description": "Raw uint16 Infra Red image.",
+          "streamMode": "STREAM_MODE_TOPIC",
+          "rosTopic": {
+            "topic": "/camera/infra2/image_rect_raw",
+            "type": "Messages.sensor_msgs.Image",
+            "qosProfile": ""
+          },
+          "latched": false,
+          "maxRate": 0,
+          "expectedRate": 0
+        },
+        {
+          "name": "infra_camera_info_left",
+          "type": "",
+          "description": "Left infra camera calibration and metadata.",
+          "streamMode": "STREAM_MODE_TOPIC",
+          "rosTopic": {
+            "topic": "/camera/infra1/camera_info",
+            "type": "Messages.sensor_msgs.CameraInfo",
+            "qosProfile": ""
+          },
+          "latched": false,
+          "maxRate": 0,
+          "expectedRate": 0
+        },
+        {
+          "name": "infra_camera_info_right",
+          "type": "",
+          "description": "Right infra camera calibration and metadata.",
+          "streamMode": "STREAM_MODE_TOPIC",
+          "rosTopic": {
+            "topic": "/camera/infra2/camera_info",
+            "type": "Messages.sensor_msgs.CameraInfo",
+            "qosProfile": ""
+          },
+          "latched": false,
+          "maxRate": 0,
+          "expectedRate": 0
+        },
+        {
+          "name": "depth_camera_info",
+          "type": "",
+          "description": "Depth camera calibration and metadata.",
+          "streamMode": "STREAM_MODE_TOPIC",
+          "rosTopic": {
+            "topic": "/camera/depth/camera_info/",
+            "type": "Messages.sensor_msgs.CameraInfo",
+            "qosProfile": ""
+          },
+          "latched": false,
+          "maxRate": 0,
+          "expectedRate": 0
+        },
+        {
+          "name": "depth_image_rect_raw",
+          "type": "",
+          "description": "Raw depth image from device. Contains uint16 depths in mm.",
+          "streamMode": "STREAM_MODE_TOPIC",
+          "rosTopic": {
+            "topic": "/camera/depth/image_rect_raw",
+            "type": "Messages.sensor_msgs.Image",
+            "qosProfile": ""
+          },
+          "latched": false,
+          "maxRate": 0,
+          "expectedRate": 0
+        },
+        {
+          "name": "gyro",
+          "type": "",
+          "description": "gyro stream (which shows angular velocity).",
+          "streamMode": "STREAM_MODE_TOPIC",
+          "rosTopic": {
+            "topic": "/camera/gyro/sample",
+            "type": "Messages.sensor_msgs.Imu",
+            "qosProfile": ""
+          },
+          "latched": false,
+          "maxRate": 0,
+          "expectedRate": 0
+        },
+        {
+          "name": "accel",
+          "type": "",
+          "description": "accel stream (which shows linear acceleration).",
+          "streamMode": "STREAM_MODE_TOPIC",
+          "rosTopic": {
+            "topic": "/camera/accel/sample",
+            "type": "Messages.sensor_msgs.Imu",
+            "qosProfile": ""
+          },
+          "latched": false,
+          "maxRate": 0,
+          "expectedRate": 0
+        }
+      ]
+    },
+    "requiredDevices": [
+      {
+        "name": "camera",
+        "info": {
+          "type": "USB_PORT_TYPE_CAMERA",
+          "productId": "",
+          "vendorId": "8086",
+          "revision": "",
+          "serial": "",
+          "vendorName": "",
+          "productName": "",
+          "attributes": {},
+          "ports": [],
+          "portIndex": 0,
+          "simulation": false,
+          "ip": "",
+          "id": "",
+          "internalId": ""
+        },
+        "mountAs": "/dev/videoX",
+        "optional": true
+      }
+    ],
+    "ros": {
+      "baseFrame": "base_link",
+      "rate": 10,
+      "publishTfDevices": true,
+      "rosMasterUri": "",
+      "rosIp": "",
+      "autoDetectIp": false
+    },
+    "tags": {},
+    "category": "Drivers/RGBD Cameras",
+    "simulation": false,
+    "pluginFile": "",
+    "license": "Apache 2.0",
+    "id": ""
+  }
