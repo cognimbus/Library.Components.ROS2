@@ -18,6 +18,6 @@ docker buildx inspect --bootstrap
 #
 
 
-docker buildx build --platform linux/arm64 -t cognimbus/yolo_detector:test --push .
+docker buildx build --platform linux/arm64 -t cognimbus/yolo_detector:foxy --push .
 
 
