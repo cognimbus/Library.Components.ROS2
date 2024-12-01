@@ -1,5 +1,5 @@
 {
-  "name": "cogniteam/ultralytics-yolov8",
+  "name": "cogniteam/ultralytics-yolov8-jetpack5",
   "type": "COMPONENT_TYPE_COMPONENT",
   "className": "Ros2Component",
   "instanceName": "",
