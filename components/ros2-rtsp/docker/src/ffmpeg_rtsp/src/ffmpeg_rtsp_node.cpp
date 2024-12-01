@@ -32,6 +32,7 @@ public:
 private:
     void timer_callback()
     {
+        try{
         if (!cap_.isOpened()) {
             this->open_rtsp_stream();
             return;
@@ -57,7 +58,16 @@ private:
             sensor_msgs::msg::CompressedImage::SharedPtr compressed_msg = tempMsg.toCompressedImageMsg();
 
             compressed_publisher_->publish(*compressed_msg);
-        } 
+        }
+        }
+        catch (const cv_bridge::Exception& e) {
+            RCLCPP_ERROR(this->get_logger(), "CV Bridge exception: %s", e.what());
+            return;
+        }
+        catch (const std::exception& e) {
+            RCLCPP_ERROR(this->get_logger(), "Unexpected exception: %s", e.what());
+            return;
+        }
     }
     
     void open_rtsp_stream(){
