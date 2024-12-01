@@ -22,7 +22,7 @@
     "hostIpAddress": "",
     "variables": [],
     "dockerInfo": {
-      "image": "cognimbus/rtsp:humble",
+      "image": "cognimbus/rtsp:test",
       "containerId": "",
       "imageSize": 0,
       "commands": [
